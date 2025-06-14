@@ -6,7 +6,7 @@ set -e
 
 GITHUB_USER="${GITHUB_USER:-Scottzonn}"
 CONFIG_TYPE="${1:-tmux}"
-BASE_URL="https://raw.githubusercontent.com/$GITHUB_USER/dotfiles/main"
+BASE_URL="https://raw.githubusercontent.com/$GITHUB_USER/dotfiles/refs/heads/main"
 
 # Download and apply configs
 case "$CONFIG_TYPE" in
