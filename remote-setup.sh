@@ -4,7 +4,7 @@
 # The deploy-dotfiles.sh script is intended to be used on a local machine to deploy the dotfiles to a remote server.
 set -e
 
-GITHUB_USER="${GITHUB_USER:-yourusername}"
+GITHUB_USER="${GITHUB_USER:-Scottzonn}"
 CONFIG_TYPE="${1:-tmux}"
 BASE_URL="https://raw.githubusercontent.com/$GITHUB_USER/dotfiles/main"
 
