@@ -12,7 +12,7 @@ BASE_URL="https://raw.githubusercontent.com/$GITHUB_USER/dotfiles/main"
 case "$CONFIG_TYPE" in
     tmux)
         echo "Setting up tmux..."
-        curl -fsSL "$BASE_URL/tmux/.tmux.conf" > ~/.tmux.conf
+        curl -fsSL "$BASE_URL/.tmux.conf" > ~/.tmux.conf
         # Reload tmux if running
         tmux source ~/.tmux.conf 2>/dev/null || true
         echo "✓ Tmux configured"
@@ -21,11 +21,11 @@ case "$CONFIG_TYPE" in
     shell)
         echo "Setting up shell..."
         if [ -n "$BASH_VERSION" ]; then
-            curl -fsSL "$BASE_URL/bash/.bashrc" > ~/.bashrc
+            curl -fsSL "$BASE_URL/.bashrc" > ~/.bashrc
             source ~/.bashrc
             echo "✓ Bash configured"
         elif [ -n "$ZSH_VERSION" ]; then
-            curl -fsSL "$BASE_URL/zsh/.zshrc" > ~/.zshrc
+            curl -fsSL "$BASE_URL/.zshrc" > ~/.zshrc
             source ~/.zshrc
             echo "✓ Zsh configured"
         fi
@@ -33,7 +33,7 @@ case "$CONFIG_TYPE" in
     
     git)
         echo "Setting up git..."
-        curl -fsSL "$BASE_URL/git/.gitconfig" > ~/.gitconfig
+        curl -fsSL "$BASE_URL/.gitconfig" > ~/.gitconfig
         echo "✓ Git configured"
         ;;
     
