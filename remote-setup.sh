@@ -13,6 +13,16 @@ case "$CONFIG_TYPE" in
     tmux)
         echo "Setting up tmux..."
         curl -fsSL "$BASE_URL/.tmux.conf" > ~/.tmux.conf
+        
+        # Install TPM (Tmux Plugin Manager)
+        if [ ! -d ~/.tmux/plugins/tpm ]; then
+            echo "Installing TPM..."
+            git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+            echo "✓ TPM installed"
+        else
+            echo "✓ TPM already installed"
+        fi
+        
         # Reload tmux if running
         tmux source ~/.tmux.conf 2>/dev/null || true
         echo "✓ Tmux configured"
