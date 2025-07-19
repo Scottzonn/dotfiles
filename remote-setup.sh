@@ -23,6 +23,11 @@ case "$CONFIG_TYPE" in
             echo "✓ TPM already installed"
         fi
         
+        # Install tmux plugins
+        echo "Installing tmux plugins..."
+        ~/.tmux/plugins/tpm/bin/install_plugins
+        echo "✓ Tmux plugins installed"
+        
         # Reload tmux if running
         tmux source ~/.tmux.conf 2>/dev/null || true
         echo "✓ Tmux configured"
