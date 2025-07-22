@@ -29,6 +29,7 @@ case "$CONFIG_TYPE" in
         echo "✓ Tmux plugins installed"
         
         # Reload tmux if running
+        echo "sourcing new conf..."
         tmux source ~/.tmux.conf 2>/dev/null || true
         echo "✓ Tmux configured"
         ;;
