@@ -2,6 +2,7 @@
 # remote-setup.sh - Just download and apply dotfiles
 # This is intended to be used on a remote server, not locally.
 # The deploy-dotfiles.sh script is intended to be used on a local machine to deploy the dotfiles to a remote server.
+# Updated: 2025-08-03 - Fixed plugin installation order and error handling
 set -e
 
 GITHUB_USER="${GITHUB_USER:-Scottzonn}"
