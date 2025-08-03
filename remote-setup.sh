@@ -7,7 +7,7 @@ set -e
 
 GITHUB_USER="${GITHUB_USER:-Scottzonn}"
 CONFIG_TYPE="${1:-tmux}"
-BASE_URL="https://raw.githubusercontent.com/$GITHUB_USER/dotfiles/refs/heads/main"
+BASE_URL="https://raw.githubusercontent.com/$GITHUB_USER/dotfiles/HEAD"
 
 # Download and apply configs
 case "$CONFIG_TYPE" in
@@ -35,10 +35,15 @@ case "$CONFIG_TYPE" in
         # Install tmux plugins (only if tmux.conf exists and has plugin config)
         if grep -q "@plugin" ~/.tmux.conf 2>/dev/null; then
             echo "Installing tmux plugins..."
-            if ~/.tmux/plugins/tpm/bin/install_plugins; then
+            # Set required environment variables for TPM
+            export TMUX_PLUGIN_MANAGER_PATH="$HOME/.tmux/plugins"
+            
+            # Try to install plugins - this may fail if not in tmux session
+            if TMUX_PLUGIN_MANAGER_PATH="$HOME/.tmux/plugins" ~/.tmux/plugins/tpm/bin/install_plugins 2>/dev/null; then
                 echo "✓ Tmux plugins installed"
             else
-                echo "Warning: Plugin installation failed. You can install manually with: C-Space + I"
+                echo "Note: Plugins will auto-install on first tmux session."
+                echo "Or install manually with: C-Space + I"
             fi
         else
             echo "No plugins configured in tmux.conf"
