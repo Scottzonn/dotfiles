@@ -12,7 +12,16 @@ BASE_URL="https://raw.githubusercontent.com/$GITHUB_USER/dotfiles/refs/heads/mai
 case "$CONFIG_TYPE" in
     tmux)
         echo "Setting up tmux..."
-        curl -fsSL "$BASE_URL/.tmux.conf" > ~/.tmux.conf
+        
+        # check if we can write to ~/.tmux.conf
+        if ! touch ~/.tmux.conf 2>/dev/null; then
+            echo "Warning: Cannot write to ~/.tmux.conf. Check file permissions."
+            echo "You may need to run: sudo chown $USER:$USER ~/.tmux.conf"
+            echo "Or manually download: curl -fsSL $BASE_URL/.tmux.conf"
+            exit 1
+        fi
+        
+        curl -fsSL "$BASE_URL/.tmux.conf" -o ~/.tmux.conf
         
         # Install TPM (Tmux Plugin Manager)
         if [ ! -d ~/.tmux/plugins/tpm ]; then
@@ -37,11 +46,21 @@ case "$CONFIG_TYPE" in
     shell)
         echo "Setting up shell..."
         if [ -n "$BASH_VERSION" ]; then
-            curl -fsSL "$BASE_URL/.bashrc" > ~/.bashrc
+            if ! touch ~/.bashrc 2>/dev/null; then
+                echo "Warning: Cannot write to ~/.bashrc. Check file permissions."
+                echo "You may need to run: sudo chown $USER:$USER ~/.bashrc"
+                exit 1
+            fi
+            curl -fsSL "$BASE_URL/.bashrc" -o ~/.bashrc
             source ~/.bashrc
             echo "✓ Bash configured"
         elif [ -n "$ZSH_VERSION" ]; then
-            curl -fsSL "$BASE_URL/.zshrc" > ~/.zshrc
+            if ! touch ~/.zshrc 2>/dev/null; then
+                echo "Warning: Cannot write to ~/.zshrc. Check file permissions."
+                echo "You may need to run: sudo chown $USER:$USER ~/.zshrc"
+                exit 1
+            fi
+            curl -fsSL "$BASE_URL/.zshrc" -o ~/.zshrc
             source ~/.zshrc
             echo "✓ Zsh configured"
         fi
@@ -49,7 +68,12 @@ case "$CONFIG_TYPE" in
     
     git)
         echo "Setting up git..."
-        curl -fsSL "$BASE_URL/.gitconfig" > ~/.gitconfig
+        if ! touch ~/.gitconfig 2>/dev/null; then
+            echo "Warning: Cannot write to ~/.gitconfig. Check file permissions."
+            echo "You may need to run: sudo chown $USER:$USER ~/.gitconfig"
+            exit 1
+        fi
+        curl -fsSL "$BASE_URL/.gitconfig" -o ~/.gitconfig
         echo "✓ Git configured"
         ;;
     
