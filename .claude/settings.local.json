@@ -3,7 +3,9 @@
     "allow": [
       "Bash(find:*)",
       "Bash(ls:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(tmux kill-server:*)",
+      "Bash(tmux source-file:*)"
     ],
     "deny": []
   }
