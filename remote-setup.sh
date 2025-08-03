@@ -13,15 +13,14 @@ case "$CONFIG_TYPE" in
     tmux)
         echo "Setting up tmux..."
         
-        # check if we can write to ~/.tmux.conf
-        if ! touch ~/.tmux.conf 2>/dev/null; then
-            echo "Warning: Cannot write to ~/.tmux.conf. Check file permissions."
-            echo "You may need to run: sudo chown $USER:$USER ~/.tmux.conf"
-            echo "Or manually download: curl -fsSL $BASE_URL/.tmux.conf"
+        # Download tmux config first
+        echo "Downloading tmux configuration..."
+        if ! curl -fsSL "$BASE_URL/.tmux.conf" -o ~/.tmux.conf; then
+            echo "Error: Failed to download .tmux.conf"
+            echo "Try manually: curl -fsSL $BASE_URL/.tmux.conf -o ~/.tmux.conf"
             exit 1
         fi
-        
-        curl -fsSL "$BASE_URL/.tmux.conf" -o ~/.tmux.conf
+        echo "✓ Tmux config downloaded"
         
         # Install TPM (Tmux Plugin Manager)
         if [ ! -d ~/.tmux/plugins/tpm ]; then
@@ -32,10 +31,17 @@ case "$CONFIG_TYPE" in
             echo "✓ TPM already installed"
         fi
         
-        # Install tmux plugins
-        echo "Installing tmux plugins..."
-        ~/.tmux/plugins/tpm/bin/install_plugins
-        echo "✓ Tmux plugins installed"
+        # Install tmux plugins (only if tmux.conf exists and has plugin config)
+        if grep -q "@plugin" ~/.tmux.conf 2>/dev/null; then
+            echo "Installing tmux plugins..."
+            if ~/.tmux/plugins/tpm/bin/install_plugins; then
+                echo "✓ Tmux plugins installed"
+            else
+                echo "Warning: Plugin installation failed. You can install manually with: C-Space + I"
+            fi
+        else
+            echo "No plugins configured in tmux.conf"
+        fi
         
         # Reload tmux if running
         echo "sourcing new conf..."
